@@ -29,3 +29,4 @@ the necessary dependencies, then `npm start` to start the app
 ### Worklog
 
 - [x] Learning the basic concept of GraphQL, 2-3 hours
+  - based on this tutorial https://www.howtographql.com/react-apollo/1-getting-started/ 
