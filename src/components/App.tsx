@@ -1,5 +1,6 @@
 import { Container, Grid, Stack } from "@mui/material";
 import React from "react";
+import Details from "./Details";
 import Search from "./Search";
 
 const App = () => (
@@ -9,7 +10,7 @@ const App = () => (
         <Search />
       </Grid>
       <Grid item xs={6}>
-        <p>Details</p>
+        <Details />
       </Grid>
     </Grid>
   </Container>
