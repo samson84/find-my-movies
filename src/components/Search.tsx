@@ -8,7 +8,11 @@ import {
 import SearchInput from "./SearchInput";
 import SearchResult from "./SearchResult";
 
-const Search = () => {
+type SearchProps = {
+  onTitleClick: (title: string) => void;
+};
+
+const Search = ({ onTitleClick }: SearchProps) => {
   const [executeSearch, { data, error, loading }] = useLazyQuery<
     SearchMovieResult,
     SearchMovieQueryVars
@@ -27,7 +31,12 @@ const Search = () => {
       {loading ? (
         <p>loading</p>
       ) : (
-        data && <SearchResult movies={data.searchMovies} />
+        data && (
+          <SearchResult
+            movies={data.searchMovies}
+            onTitleClick={onTitleClick}
+          />
+        )
       )}
     </>
   );

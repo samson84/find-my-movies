@@ -1,33 +1,46 @@
 import { useState, useEffect } from "react";
 
-type Error = {
+export type MovieDetailsError = {
   code: "not_found" | "internal";
   details?: string;
 };
 
-export const useMovieDetails = (query: string) => {
-  const [data, setData] = useState<any>({});
+export type MovieDetails = {
+  intro?: string;
+  imdbLink?: string;
+  wikipediaLink?: string;
+};
+export const useMovieDetails = (query: string | null | undefined) => {
+  const [data, setData] = useState<MovieDetails | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<MovieDetailsError | null>(null);
 
   useEffect(() => {
+    if (!query) {
+      return;
+    }
     const task = async () => {
       setLoading(true);
       try {
-        const pages = await openSearch(query);
-        const isMovies = await Promise.allSettled(
-          pages.map((page) => isMovie(page))
+        const pages = await search(query);
+        const templateResults = await Promise.allSettled(
+          pages.map((page) => getTemplates(page))
         );
-        const firstMovieIndex = isMovies.findIndex(
-          (result) => result.status === "fulfilled" && result.value === true
+        const firstMovieIndex = templateResults.findIndex(
+          (result) => result.status === "fulfilled" && isMovie(result.value)
         );
         if (firstMovieIndex === -1) {
           return setError({
             code: "not_found",
           });
         }
-        const pageDetails = await getPageDetails(pages[firstMovieIndex]);
-        setData(pageDetails);
+        const firstMoviePage = pages[firstMovieIndex];
+        const { intro, links } = await getDetails(firstMoviePage);
+        setData({
+          intro,
+          imdbLink: links?.[0],
+          wikipediaLink: createWikipediaLink(firstMoviePage),
+        });
       } catch (error) {
         setError({ code: "internal", details: String(error) });
       } finally {
@@ -35,7 +48,7 @@ export const useMovieDetails = (query: string) => {
       }
     };
     task();
-  }, []);
+  }, [query]);
 
   return { data, loading, error };
 };
@@ -43,7 +56,7 @@ export const useMovieDetails = (query: string) => {
 const BASE_URI =
   "https://en.wikipedia.org/w/api.php?format=json&origin=*&formatversion=2";
 
-const openSearch = async (query: string): Promise<string[]> => {
+const search = async (query: string): Promise<string[]> => {
   const encoded = encodeURI(query);
   const result = await fetch(
     `${BASE_URI}&action=opensearch&search=${encoded}&profile=strict`
@@ -60,42 +73,40 @@ type TemplateResponse = {
 type Template = {
   title: string;
 };
-const isMovie = async (page: string): Promise<boolean> => {
-  const encoded = encodeURI(page);
+const getTemplates = async (pageId: string): Promise<Template[]> => {
   const result = await fetch(
-    `${BASE_URI}&action=parse&page=${encoded}&prop=templates`
+    `${BASE_URI}&action=parse&page=${encodeURI(pageId)}&prop=templates`
   );
-  const data: TemplateResponse = await result.json();
-  return data.parse.templates.some(
-    ({ title }) => title === "Template:Infobox film"
-  );
+  const response: TemplateResponse = await result.json();
+  return response.parse.templates;
 };
 
-type PageDetailsResponse = {
-  parse: {
-    externallinks: string[];
-    wikitext: string;
+const isMovie = (templates: Template[]): boolean =>
+  templates.some(({ title }) => title === "Template:Infobox film");
+
+const createWikipediaLink = (pageId: string): string =>
+  `https://en.wikipedia.org/wiki/${pageId.replaceAll(" ", "_")}`;
+
+type PageDetailsReponse = {
+  query: {
+    pages: { extract: string; extlinks: { url: string }[] }[];
   };
 };
 type PageDetails = {
-  plot: string | undefined;
-  imdbLink: string | undefined;
-  wikipediaLink: string | undefined;
+  intro?: string;
+  links: string[];
 };
-const getPageDetails = async (page: string): Promise<PageDetails> => {
-  const encoded = encodeURI(page);
-  const result = await fetch(
-    `${BASE_URI}&action=parse&page=${encoded}&prop=externallinks%7Cwikitext`
+const getDetails = async (pageId: string): Promise<PageDetails> => {
+  const response = await fetch(
+    `${BASE_URI}&action=query&prop=extracts%7Cextlinks&titles=${encodeURI(
+      pageId
+    )}&exsentences=5&exintro=1&explaintext=1&exsectionformat=plain&elprotocol=https&elquery=www.imdb.com`
   );
-  const data: PageDetailsResponse = await result.json();
-  const imdbLink = data.parse.externallinks.find((link) =>
-    link.startsWith("https://www.imdb.com/title/")
-  );
-  const PLOT_FINDER = /== Plot ==([^=]+)==/g;
-  const raw = data.parse.wikitext.match(PLOT_FINDER)?.[0];
-  const wikipediaLink = `https://en.wikipedia.org/wiki/${page.replaceAll(
-    " ",
-    "_"
-  )}`;
-  return { plot: raw, imdbLink, wikipediaLink };
+  const result: PageDetailsReponse = await response.json();
+  const intro = result?.query?.pages?.[0]?.extract;
+  const links = result?.query?.pages?.[0]?.extlinks.map((link) => link.url);
+  return {
+    intro,
+    links: links ?? [],
+  };
 };

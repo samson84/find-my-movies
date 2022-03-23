@@ -1,21 +1,19 @@
-import {
-  Stack,
-  Paper,
-  Typography as T,
-  Card,
-  CardContent,
-  Link,
-} from "@mui/material";
+import { Stack, Typography as T, Card, CardContent, Link } from "@mui/material";
 import React from "react";
-import { Movie, SearchMovieResult } from "../api/tmdb";
+import { Movie } from "../api/tmdb";
 
 type ItemProps = {
   movie: Movie;
+  onTitleClick: (title: string) => void;
 };
-const Item = ({ movie }: ItemProps) => (
+const Item = ({ movie, onTitleClick }: ItemProps) => (
   <Card elevation={2}>
     <CardContent>
-      <Link variant="body1" component="button">
+      <Link
+        variant="body1"
+        component="button"
+        onClick={() => onTitleClick(movie.name)}
+      >
         {movie.name}
       </Link>
       <T>{movie.score}</T>
@@ -25,11 +23,12 @@ const Item = ({ movie }: ItemProps) => (
 
 type SearchResultProps = {
   movies: Movie[];
+  onTitleClick: (title: string) => void;
 };
-const SearchResult = ({ movies }: SearchResultProps) => (
+const SearchResult = ({ movies, onTitleClick }: SearchResultProps) => (
   <Stack spacing={2}>
     {movies.map((movie) => (
-      <Item key={movie.id} movie={movie} />
+      <Item key={movie.id} movie={movie} onTitleClick={onTitleClick} />
     ))}
   </Stack>
 );
