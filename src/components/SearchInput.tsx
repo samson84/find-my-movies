@@ -9,24 +9,39 @@ type SearchInputProps = {
 const SearchInput = ({ onSearch }: SearchInputProps) => {
   const [query, setQuery] = useState("");
 
+  const searchDisabled = query.length === 0;
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setQuery(event.target.value);
 
-  const handleSearch = () => onSearch(query);
+  const handleSearch = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    if (searchDisabled) {
+      return;
+    }
+    onSearch(query);
+  };
 
   return (
-    <Stack direction="row">
-      <TextField
-        variant="outlined"
-        label="Search"
-        onChange={handleChange}
-        fullWidth
-        sx={{ mr: 1 }}
-      />
-      <Button variant="contained" color="primary" onClick={handleSearch}>
-        Search
-      </Button>
-    </Stack>
+    <form onSubmit={handleSearch}>
+      <Stack direction="row">
+        <TextField
+          variant="outlined"
+          label="Search"
+          onChange={handleChange}
+          fullWidth
+          sx={{ mr: 1 }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={searchDisabled}
+          type="submit"
+        >
+          Search
+        </Button>
+      </Stack>
+    </form>
   );
 };
 

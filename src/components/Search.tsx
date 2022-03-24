@@ -8,6 +8,7 @@ import {
 import SearchInput from "./SearchInput";
 import SearchResult from "./SearchResult";
 import { Box, Grid } from "@mui/material";
+import SomethingWentWrong from "./SomethingWentWrong";
 
 type SearchProps = {
   onTitleClick: (title: string) => void;
@@ -23,7 +24,7 @@ const Search = ({ onTitleClick }: SearchProps) => {
     executeSearch({ variables: { query } });
 
   if (error) {
-    return <p>Error</p>;
+    return <SomethingWentWrong />;
   }
 
   return (
@@ -34,15 +35,12 @@ const Search = ({ onTitleClick }: SearchProps) => {
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {loading ? (
-          <p>loading</p>
-        ) : (
-          data && (
-            <SearchResult
-              movies={data.searchMovies}
-              onTitleClick={onTitleClick}
-            />
-          )
+        {(data || loading) && (
+          <SearchResult
+            isLoading={loading}
+            movies={data?.searchMovies}
+            onTitleClick={onTitleClick}
+          />
         )}
       </Grid>
     </Grid>

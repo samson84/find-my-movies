@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 
 export type MovieDetailsError = {
-  code: "not_found" | "internal";
-  details?: string;
+  code: "not_found";
 };
 
 export type MovieDetails = {

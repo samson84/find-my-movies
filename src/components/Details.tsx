@@ -1,28 +1,38 @@
 import React from "react";
 import { useMovieDetails } from "../api/wikipedia";
 import {
-  Paper,
   Typography as T,
-  Link,
   Card,
   CardContent,
   CardActions,
   Button,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
+import SomethingWentWrong from "./SomethingWentWrong";
 
 type DetailsProps = {
   title?: string | null | undefined;
 };
 
+const NotFound = () => (
+  <Alert severity="info">No movie details found on Wikipedia.</Alert>
+);
+
 const Details = ({ title }: DetailsProps) => {
   const { data, error, loading } = useMovieDetails(title);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
   if (error) {
-    return <div>Error..</div>;
+    if (error.code === "not_found") {
+      return <NotFound />;
+    }
+    return <SomethingWentWrong />;
   }
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
   if (!data || !title) {
     return null;
   }
