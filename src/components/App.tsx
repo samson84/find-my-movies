@@ -11,7 +11,7 @@ const App = () => {
       <Grid
         container
         direction="row"
-        spacing="2"
+        spacing={2}
         justifyContent="space-between"
       >
         <Grid item xs={6}>

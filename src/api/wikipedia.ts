@@ -20,6 +20,7 @@ export const useMovieDetails = (query: string | null | undefined) => {
       return;
     }
     const task = async () => {
+      setError(null);
       setLoading(true);
       try {
         const pages = await search(query);
@@ -41,8 +42,6 @@ export const useMovieDetails = (query: string | null | undefined) => {
           imdbLink: links?.[0],
           wikipediaLink: createWikipediaLink(firstMoviePage),
         });
-      } catch (error) {
-        setError({ code: "internal", details: String(error) });
       } finally {
         setLoading(false);
       }

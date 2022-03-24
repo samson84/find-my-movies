@@ -16,7 +16,13 @@ const SearchInput = ({ onSearch }: SearchInputProps) => {
 
   return (
     <Stack direction="row">
-      <TextField variant="outlined" label="Search" onChange={handleChange} />
+      <TextField
+        variant="outlined"
+        label="Search"
+        onChange={handleChange}
+        fullWidth
+        sx={{ mr: 1 }}
+      />
       <Button variant="contained" color="primary" onClick={handleSearch}>
         Search
       </Button>

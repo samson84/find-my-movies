@@ -1,6 +1,14 @@
-import { Stack, Typography as T, Card, CardContent, Link } from "@mui/material";
+import {
+  Stack,
+  Typography as T,
+  Card,
+  CardContent,
+  Link,
+  Grid,
+} from "@mui/material";
 import React from "react";
 import { Movie } from "../api/tmdb";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 type ItemProps = {
   movie: Movie;
@@ -16,7 +24,12 @@ const Item = ({ movie, onTitleClick }: ItemProps) => (
       >
         {movie.name}
       </Link>
-      <T>{movie.score}</T>
+      <Stack alignItems="strech" direction="row">
+        <StarBorderIcon fontSize="small" />
+        <T variant="body1" component="span">
+          {movie.score}
+        </T>
+      </Stack>
     </CardContent>
   </Card>
 );

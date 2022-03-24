@@ -1,6 +1,14 @@
 import React from "react";
 import { useMovieDetails } from "../api/wikipedia";
-import { Paper, Typography as T, Link } from "@mui/material";
+import {
+  Paper,
+  Typography as T,
+  Link,
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+} from "@mui/material";
 
 type DetailsProps = {
   title?: string | null | undefined;
@@ -20,26 +28,28 @@ const Details = ({ title }: DetailsProps) => {
   }
 
   return (
-    <Paper elevation={2}>
-      <T variant="h3">{title}</T>
-      <T variant="body1" paragraph>
-        {data.intro}
-      </T>
-      <div>
+    <Card>
+      <CardContent>
+        <T variant="h4" component="div" sx={{ mb: 1 }}>
+          {title}
+        </T>
+        <T variant="body2" paragraph>
+          {data.intro}
+        </T>
+      </CardContent>
+      <CardActions>
         {data.imdbLink && (
-          <Link href={data.imdbLink} target="_blank" rel="noreferrer">
+          <Button href={data.imdbLink} target="_blank" rel="noreferrer">
             IMDB
-          </Link>
+          </Button>
         )}
-      </div>
-      <div>
         {data.wikipediaLink && (
-          <Link href={data.wikipediaLink} target="_blank" rel="noreferrer">
+          <Button href={data.wikipediaLink} target="_blank" rel="noreferrer">
             Wikipedia
-          </Link>
+          </Button>
         )}
-      </div>
-    </Paper>
+      </CardActions>
+    </Card>
   );
 };
 
