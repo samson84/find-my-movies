@@ -31,7 +31,7 @@ export type Movie = {
   genres: { id: string; name: string }[];
 };
 
-const SEARCH_MOVIE_QUERY = gql`
+export const SEARCH_MOVIE_QUERY = gql`
   query SearchMovies($query: String!) {
     searchMovies(query: $query) {
       id
