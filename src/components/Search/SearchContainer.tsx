@@ -4,7 +4,7 @@ import {
   SEARCH_MOVIE_QUERY,
   SearchMovieQueryVars,
   SearchMovieResult,
-} from "../api/tmdb";
+} from "../../api/tmdb";
 import Search from "./Search";
 
 type SearchContainerProps = {

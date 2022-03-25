@@ -8,7 +8,7 @@ import {
   Chip,
 } from "@mui/material";
 import React from "react";
-import { Movie } from "../api/tmdb";
+import { Movie } from "../../api/tmdb";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 const Score = ({ score }: { score: number }) => (

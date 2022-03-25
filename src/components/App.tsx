@@ -1,7 +1,7 @@
 import { Container, Grid } from "@mui/material";
 import React, { useState } from "react";
-import DetailsContainer from "./DetailsContainer";
-import SearchContainer from "./SearchContainer";
+import DetailsContainer from "./Details/DetailsContainer";
+import SearchContainer from "./Search/SearchContainer";
 
 const App = () => {
   const [query, setQuery] = useState<string | undefined>(undefined);

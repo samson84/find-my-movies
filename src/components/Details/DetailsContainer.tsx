@@ -1,4 +1,4 @@
-import { useMovieDetails } from "../api/wikipedia";
+import { useMovieDetails } from "../../api/wikipedia";
 import Details from "./Details";
 
 type DetailsContainerProps = {

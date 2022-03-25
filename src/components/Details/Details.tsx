@@ -1,5 +1,5 @@
 import React from "react";
-import { MovieDetails } from "../api/wikipedia";
+import { MovieDetails } from "../../api/wikipedia";
 import {
   Typography as T,
   Card,
@@ -9,7 +9,7 @@ import {
   Alert,
   CircularProgress,
 } from "@mui/material";
-import SomethingWentWrong from "./SomethingWentWrong";
+import SomethingWentWrong from "../SomethingWentWrong";
 
 type DetailsProps = {
   title?: string;

@@ -1,9 +1,9 @@
 import React from "react";
-import { Movie } from "../api/tmdb";
+import { Movie } from "../../api/tmdb";
 import SearchInput from "./SearchInput";
 import SearchResult from "./SearchResult";
 import { Box, Grid, Alert, CircularProgress } from "@mui/material";
-import SomethingWentWrong from "./SomethingWentWrong";
+import SomethingWentWrong from "../SomethingWentWrong";
 
 type SearchProps = {
   onTitleClick: (title: string) => void;
