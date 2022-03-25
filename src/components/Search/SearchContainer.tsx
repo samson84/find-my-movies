@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-import { useLazyQuery } from "@apollo/client";
-import {
-  SEARCH_MOVIE_QUERY,
-  SearchMovieQueryVars,
-  SearchMovieResult,
-} from "../../api/tmdb";
+import React from "react";
+import { useMovieSearch } from "../../api/tmdb";
 import Search from "./Search";
 
 type SearchContainerProps = {
@@ -12,25 +7,16 @@ type SearchContainerProps = {
 };
 
 const SearchContainer = ({ onTitleClick }: SearchContainerProps) => {
-  const [dirty, setDirty] = useState(false);
-  const [executeSearch, { data, error, loading }] = useLazyQuery<
-    SearchMovieResult,
-    SearchMovieQueryVars
-  >(SEARCH_MOVIE_QUERY);
-
-  const handleSearch = (query: string) => {
-    setDirty(true);
-    executeSearch({ variables: { query } });
-  };
+  const { isDirty, movies, error, isLoading, performSearch } = useMovieSearch();
 
   return (
     <Search
-      onSearch={handleSearch}
+      onSearch={performSearch}
       onTitleClick={onTitleClick}
-      isLoading={loading}
-      isDirty={dirty}
+      isLoading={isLoading}
+      isDirty={isDirty}
       hasError={error !== undefined}
-      movies={data?.searchMovies}
+      movies={movies}
     />
   );
 };

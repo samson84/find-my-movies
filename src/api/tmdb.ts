@@ -3,7 +3,9 @@ import {
   createHttpLink,
   InMemoryCache,
   gql,
+  useLazyQuery,
 } from "@apollo/client";
+import { useState } from "react";
 
 const httpLink = createHttpLink({
   uri: "https://tmdb.sandbox.zoosh.ie/dev/grphql",
@@ -14,11 +16,11 @@ export const tmdbClient = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export interface SearchMovieQueryVars {
+interface SearchMovieQueryVars {
   query: string;
 }
 
-export interface SearchMovieResult {
+interface SearchMovieResult {
   searchMovies: Movie[];
 }
 
@@ -29,7 +31,7 @@ export type Movie = {
   genres: { id: string; name: string }[];
 };
 
-export const SEARCH_MOVIE_QUERY = gql`
+const SEARCH_MOVIE_QUERY = gql`
   query SearchMovies($query: String!) {
     searchMovies(query: $query) {
       id
@@ -42,3 +44,24 @@ export const SEARCH_MOVIE_QUERY = gql`
     }
   }
 `;
+
+export const useMovieSearch = () => {
+  const [dirty, setDirty] = useState(false);
+  const [executeSearch, { data, error, loading }] = useLazyQuery<
+    SearchMovieResult,
+    SearchMovieQueryVars
+  >(SEARCH_MOVIE_QUERY);
+
+  const performSearch = (query: string) => {
+    setDirty(true);
+    executeSearch({ variables: { query } });
+  };
+
+  return {
+    isDirty: dirty,
+    movies: data?.searchMovies,
+    error,
+    isLoading: loading,
+    performSearch,
+  };
+};
