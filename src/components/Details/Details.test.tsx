@@ -2,7 +2,6 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import Details from "./Details";
 import { MovieDetails } from "../../api/wikipedia";
-import { execPath } from "process";
 
 const detailsFixture = (overrides?: Partial<MovieDetails>) => ({
   intro: "The Matrix is a 1999 science fiction action...",
@@ -195,7 +194,7 @@ describe("Details", () => {
         />
       );
 
-      expect(component).toBeEmptyDOMElement();
+      expect(component.container).toBeEmptyDOMElement();
     });
   });
 });

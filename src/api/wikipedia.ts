@@ -9,7 +9,7 @@ export type MovieDetails = {
   imdbLink?: string;
   wikipediaLink?: string;
 };
-export const useMovieDetails = (query: string | undefined) => {
+export const useMovieDetails = (query?: string) => {
   const [data, setData] = useState<MovieDetails | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<MovieDetailsError | undefined>(undefined);
