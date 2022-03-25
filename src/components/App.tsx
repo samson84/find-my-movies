@@ -1,10 +1,10 @@
 import { Container, Grid } from "@mui/material";
 import React, { useState } from "react";
-import Details from "./Details";
-import Search from "./Search";
+import DetailsContainer from "./DetailsContainer";
+import SearchContainer from "./SearchContainer";
 
 const App = () => {
-  const [title, setTitle] = useState<string | null | undefined>(null);
+  const [query, setQuery] = useState<string | undefined>(undefined);
 
   return (
     <Container>
@@ -15,10 +15,10 @@ const App = () => {
         justifyContent="space-between"
       >
         <Grid item xs={6}>
-          <Search onTitleClick={(title) => setTitle(title)} />
+          <SearchContainer onTitleClick={(query) => setQuery(query)} />
         </Grid>
         <Grid item xs={6}>
-          <Details title={title} />
+          <DetailsContainer query={query} />
         </Grid>
       </Grid>
     </Container>

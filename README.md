@@ -21,7 +21,7 @@ the necessary dependencies, then `npm start` to start the app
 - [ ] Bonus: Dual state search engine; a “related” button next to the two links in the movie: this switches the movie list from search results to a list of related movies related to the selected movie.
 
 - [x] A working web page
-- [ ] Spinner while loading data from TMDBW or wikipedia
+- [x] Spinner while loading data from TMDBW or wikipedia
 - [ ] Search for related movies
 - [x] Bonus # 1: Use Material-UI library, Material-UI look
 - [ ] Bonus # 2: Tests
@@ -33,3 +33,5 @@ the necessary dependencies, then `npm start` to start the app
 - [x] basic search, showing the results, connecting GraphQL, 3 hours
 - [x] add wikipedia parsing and details with link, 3 hours
 - [x] correct the wikipedia parsing, using wikipedia API endpoints, 3 hours
+- [x] styling, margins, padding, loading indicator, some error handling 1.5 hours
+- [ ] 

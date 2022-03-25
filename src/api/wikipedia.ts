@@ -9,17 +9,17 @@ export type MovieDetails = {
   imdbLink?: string;
   wikipediaLink?: string;
 };
-export const useMovieDetails = (query: string | null | undefined) => {
-  const [data, setData] = useState<MovieDetails | null>(null);
+export const useMovieDetails = (query: string | undefined) => {
+  const [data, setData] = useState<MovieDetails | undefined>(undefined);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<MovieDetailsError | null>(null);
+  const [error, setError] = useState<MovieDetailsError | undefined>(undefined);
 
   useEffect(() => {
     if (!query) {
       return;
     }
     const task = async () => {
-      setError(null);
+      setError(undefined);
       setLoading(true);
       try {
         const pages = await search(query);

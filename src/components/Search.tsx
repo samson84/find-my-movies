@@ -1,47 +1,48 @@
 import React from "react";
-import { useLazyQuery } from "@apollo/client";
-import {
-  SEARCH_MOVIE_QUERY,
-  SearchMovieQueryVars,
-  SearchMovieResult,
-} from "../api/tmdb";
+import { Movie } from "../api/tmdb";
 import SearchInput from "./SearchInput";
 import SearchResult from "./SearchResult";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Alert, CircularProgress } from "@mui/material";
 import SomethingWentWrong from "./SomethingWentWrong";
 
 type SearchProps = {
   onTitleClick: (title: string) => void;
+  onSearch: (query: string) => void;
+  isLoading: boolean;
+  isDirty: boolean;
+  hasError: boolean;
+  movies?: Movie[];
 };
 
-const Search = ({ onTitleClick }: SearchProps) => {
-  const [executeSearch, { data, error, loading }] = useLazyQuery<
-    SearchMovieResult,
-    SearchMovieQueryVars
-  >(SEARCH_MOVIE_QUERY);
+const NotFound = () => (
+  <Alert severity="info">No movies found for this search.</Alert>
+);
 
-  const handleSearch = (query: string) =>
-    executeSearch({ variables: { query } });
-
-  if (error) {
-    return <SomethingWentWrong />;
-  }
-
+const Search = ({
+  onTitleClick,
+  onSearch,
+  isDirty,
+  isLoading,
+  hasError,
+  movies,
+}: SearchProps) => {
   return (
     <Grid container>
       <Grid item xs={12}>
         <Box sx={{ mb: 2 }}>
-          <SearchInput onSearch={handleSearch} />
+          <SearchInput onSearch={onSearch} isDisabled={isLoading} />
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {(data || loading) && (
-          <SearchResult
-            isLoading={loading}
-            movies={data?.searchMovies}
-            onTitleClick={onTitleClick}
-          />
-        )}
+        {hasError ? (
+          <SomethingWentWrong />
+        ) : isLoading ? (
+          <CircularProgress />
+        ) : movies?.length ? (
+          <SearchResult movies={movies} onTitleClick={onTitleClick} />
+        ) : isDirty ? (
+          <NotFound />
+        ) : null}
       </Grid>
     </Grid>
   );

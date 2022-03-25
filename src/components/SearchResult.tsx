@@ -6,7 +6,6 @@ import {
   Link,
   Box,
   Chip,
-  CircularProgress,
 } from "@mui/material";
 import React from "react";
 import { Movie } from "../api/tmdb";
@@ -61,21 +60,15 @@ const Item = ({ movie, onTitleClick }: ItemProps) => (
 type SearchResultProps = {
   movies?: Movie[];
   onTitleClick: (title: string) => void;
-  isLoading: boolean;
 };
-const SearchResult = ({
-  movies = [],
-  onTitleClick,
-  isLoading,
-}: SearchResultProps) =>
-  isLoading ? (
-    <CircularProgress />
-  ) : (
+const SearchResult = ({ movies = [], onTitleClick }: SearchResultProps) => {
+  return (
     <Stack spacing={2}>
       {movies.map((movie) => (
         <Item key={movie.id} movie={movie} onTitleClick={onTitleClick} />
       ))}
     </Stack>
   );
+};
 
 export default SearchResult;
