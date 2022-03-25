@@ -1,13 +1,14 @@
 # Find My Movies
 
-This app demonstrates how to use GraphQL to fetch some basic
-movie data and show them in a Material UI based Application.
+This app demonstrates how to use GraphQL and the wikipedia API
+to fetch some basic movie data and show them in a Material 
+UI based Application.
 
 ## Usage
 
 This app is simple Create React App. Run `npm install` to install
 the necessary dependencies, then `npm start` to start the app 
-(in development mode)
+(in development mode).
 
 ## Project
 
@@ -18,13 +19,13 @@ the necessary dependencies, then `npm start` to start the app
 - [x] By clicking on an address, the app tries to find the related English wikipedia page (with a REST request)
 - [x] and then displays a summary of it in a detail panel (e.g. first paragraph),
 - [x] along with a clickable link that opens in a new window in IMDB and wikipedia
-- [ ] Bonus: Dual state search engine; a “related” button next to the two links in the movie: this switches the movie list from search results to a list of related movies related to the selected movie.
+- [-] Bonus: Dual state search engine; a “related” button next to the two links in the movie: this switches the movie list from search results to a list of related movies related to the selected movie.
 
 - [x] A working web page
 - [x] Spinner while loading data from TMDBW or wikipedia
-- [ ] Search for related movies
+- [-] Search for related movies
 - [x] Bonus # 1: Use Material-UI library, Material-UI look
-- [ ] Bonus # 2: Tests
+- [x] Bonus # 2: Tests
 
 ### Worklog
 
@@ -33,5 +34,6 @@ the necessary dependencies, then `npm start` to start the app
 - [x] basic search, showing the results, connecting GraphQL, 3 hours
 - [x] add wikipedia parsing and details with link, 3 hours
 - [x] correct the wikipedia parsing, using wikipedia API endpoints, 3 hours
-- [x] styling, margins, padding, loading indicator, some error handling 1.5 hours
-- [ ] 
+- [x] styling, margins, padding, loading indicator, some error handling 1 hours
+- [x] adding presentational component tests, and integration tests for
+  the container component (example). 4 hours
